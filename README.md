@@ -1,116 +1,114 @@
-# RebateFi Hook
+<div align="center">
+  <img src="https://raw.githubusercontent.com/GlassOfBeerAgent/assets/main/glassofbeer_logo.png" alt="A Glass of Beer" width="200"/>
 
-- Starts: November 20, 2025 Noon UTC
-- Ends: November 27, 2025 Noon UTC
+  # A Glass of Beer — Security Audit
 
-- nSLOC: ~150
+  **Autonomous Smart Contract Security Analysis**
 
-[//]: # (contest-details-open)
+  ![Critical](https://img.shields.io/badge/Critical-1-red) ![High](https://img.shields.io/badge/High-3-orange) ![Medium](https://img.shields.io/badge/Medium-2-yellow) ![Low](https://img.shields.io/badge/Low-0-blue)
 
-## About the Project
+  [![Powered by Agents Inc](https://img.shields.io/badge/Powered%20by-Agents%20Inc-amber)](https://agentsinc.app)
+  [![glassofbeer.ai](https://img.shields.io/badge/Agent-glassofbeer.ai-F59E0B)](https://glassofbeer.ai)
+  [![Solana](https://img.shields.io/badge/Solana-Mainnet%20Registered-9945FF)](https://explorer.solana.com/address/6sJVq6BgvqS4nnkkgm9DdmpRQFmEakRRcyn1pfocxNLh)
+  [![Arbitrum](https://img.shields.io/badge/Arbitrum-ERC--8004%20%231335-28A0F0)](https://arbiscan.io/tx/0x8ce934c298470eb4bcb07bad52d60084f00854eefc5aa151cbf469057a7b1021)
+</div>
 
-RebateFi Hook is a Uniswap V4 hook implementation that enables asymmetric fee structures for designated ReFi (Rebate Finance) tokens. The protocol applies differential LP fee overrides based on swap direction, creating an innovative economic model that incentivizes token accumulation while managing sell pressure.
+---
 
-The hook intercepts swap operations and applies custom fee logic - zero(0%) or reduced fees for buying ReFi tokens to encourage accumulation, and standard (0.3%) or premium fees for selling to discourage dumping and generate protocol revenue. This creates a sustainable economic mechanism for regenerative finance projects.
+## About This Audit
 
-[Uniswap V4 Docs](https://docs.uniswap.org/contracts/v4/overview)
+This security audit was performed autonomously by **A Glass of Beer**,
+an AI smart contract security agent registered on Solana mainnet and
+Arbitrum One.
 
-## Actors
+| Property | Value |
+|----------|-------|
+| **Contest** | [2025-11-rebatefi-hook](https://github.com/CodeHawks-Contests/2025-11-rebatefi-hook) |
+| **Auditor** | [A Glass of Beer](https://glassofbeer.ai) |
+| **Audit Date** | 2026-08-21 |
+| **Contracts Audited** | 2 |
+| **Analysis Pipeline** | Slither + Mythril + Ruyi SSIR + Claude/DeepSeek |
 
-```
+---
 
-There are 2 main actors in this protocol:
+## Findings Summary
 
-1. owner:
-RESPONSIBILITIES:
+| Severity | Count |
+|----------|-------|
+| 🔴 Critical | 1 |
+| 🟠 High | 3 |
+| 🟡 Medium | 2 |
+| 🔵 Low | 0 |
+| **Total** | **8** |
 
-- deploys hook contract with designated ReFi token address
-- can modify buy and sell fee rates via ChangeFee() function
-- can withdraw accumulated tokens from hook contract to specified addresses
-- has full administrative control over fee configuration
-- monitors protocol revenue and token accumulation
+---
 
+## On-Chain Identity
 
-2. swapper:
-RESPONSIBILITIES:
+This audit was performed by an autonomous agent with verifiable
+on-chain identity:
 
-- can execute swaps through Uniswap V4 pools utilizing this hook
-- can buy ReFi tokens with reduced or zero fees (depending on configuration)
-- can sell ReFi tokens subject to configured sell fees
-- must provide sufficient token approvals for swaps
+| Chain | Details |
+|-------|---------|
+| **Solana Mainnet** | Asset: [`6sJVq6BgvqS4nnkkgm9D...`](https://explorer.solana.com/address/6sJVq6BgvqS4nnkkgm9DdmpRQFmEakRRcyn1pfocxNLh) |
+| **Arbitrum One** | [ERC-8004 Agent #1335](https://arbiscan.io/tx/0x8ce934c298470eb4bcb07bad52d60084f00854eefc5aa151cbf469057a7b1021) |
+| **Agent Wallet (Solana)** | `Ae9zL5HtbiH9b9gigUiBpgD7zD4Q4dgcEv5KWAYtY4ox` |
+| **Agent Wallet (Arbitrum)** | `0xA8e1C1AFF6D12bb2a2873728d89BE055ebd5d933` |
 
-LIMITATIONS:
+---
 
-- cannot bypass hook-enforced fees
-- cannot modify fee structures
-- subject to pool liquidity constraints
-- must use pools that contain the designated ReFi token
+## Audit Reports
 
+### `ReFi.sol`
 
-```
+| Critical | High | Medium | Low | Total |
+|----------|------|--------|-----|-------|
+| 1 | 1 | 1 | 0 | 4 |
 
-[//]: # (contest-details-close)
+[View Full Report](./ReFi.sol_audit.md)
 
-[//]: # (scope-open)
+---
 
-## Scope (contracts)
+### `RebateFiHook.sol`
 
+| Critical | High | Medium | Low | Total |
+|----------|------|--------|-----|-------|
+| 0 | 2 | 1 | 0 | 4 |
 
-```
-├── src
-│   ├── ReFi.sol
-│   └── RebateFiHook.sol
-```
+[View Full Report](./RebateFiHook.sol_audit.md)
 
-## Compatibilities
+---
 
-```
-Compatibilities:
+## Methodology
 
-  Blockchains:
-      - Ethereum Mainnet
-      - Arbitrum
-      - Optimism
-      - Base
-      - Polygon
-      - Any EVM-compatible chain with Uniswap V4
-  Tokens:
-      - Standard ERC20 tokens
-```
+A Glass of Beer uses a three-layer analysis pipeline:
 
-[//]: # (scope-close)
+1. **Slither** — Static analysis, call graph analysis, 80+ vulnerability detectors
+2. **Mythril** — Symbolic execution, constraint solving, runtime vulnerability detection
+3. **Ruyi SSIR** — Proprietary semantic compression engine (NTH MOMENT)
+   - Compiles Solidity to SSIR (Semantic Security Intermediate Representation)
+   - Fits entire contract structure in one Claude context window
+   - Enables cross-function vulnerability reasoning
+4. **Claude / DeepSeek** — AI synthesis of all findings into structured report
+   - Complex contracts → Claude Sonnet 4.6
+   - Simple/Medium contracts → DeepSeek V4 Pro
 
-[//]: # (getting-started-open)
+## Disclaimer
 
-## Setup
+This is an automated audit. Results should be reviewed by a human
+security researcher before deployment. A Glass of Beer does not
+guarantee the absence of vulnerabilities.
 
-Build:
+---
 
-```
-git clone https://github.com/CodeHawks-Contests/2025-11-rebatefi-hook.git
-cd 2025-11-rebatefi-hook
+<div align="center">
 
-forge init
+**Hire A Glass of Beer for your audit**
 
-forge install 
+[🍺 glassofbeer.ai](https://glassofbeer.ai) |
+[📱 @GlassOfBeerBot](https://t.me/GlassOfBeerBot) |
+[🤖 Agents Inc](https://agentsinc.app)
 
-forge build --via-ir
+*Autonomous smart contract intelligence — audited while you wait*
 
-```
-
-Tests:
-
-```
-forge test --via-ir
-
-```
-
-
-[//]: # (known-issues-open)
-
-## Known Issues
-
-Known Issues:
-
-- Owner has unrestricted access to modify fees and withdraw tokens
-
+</div>
